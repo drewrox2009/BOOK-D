@@ -136,7 +136,7 @@ modalSave.addEventListener("click", function () {
   addBookModal.className = "add-book-modal";
   createNewBook();
   newBookForm.reset();
-  //   userAdded = document.querySelectorAll(".added").forEach((e) => e.remove());
+
   updateBookList(myLibrary);
 });
 
@@ -156,7 +156,7 @@ modalEditSave.addEventListener("click", function (e) {
   myLibrary[`${index}`].url = editBookForm.elements[4].value;
   editBookModal.className = "edit-book-modal";
   editBookForm.reset();
-  //   userAdded = document.querySelectorAll(".added").forEach((e) => e.remove());
+
   updateBookList(myLibrary);
 });
 
@@ -229,11 +229,23 @@ function updateBookList(bookArray) {
   });
   editButtons = document.querySelectorAll(".edit");
   moreButtons = document.querySelectorAll(".more");
+  readIndicators = document.querySelectorAll(".read-indicator");
+  updateReadIndicators();
   getEditAction();
   getMoreAction();
   saveArrayToLocalStorage(myLibrary, localLibraryKey);
 }
-
+function updateReadIndicators() {
+  readIndicators.forEach((bookIndicator) => {
+    console.log(bookIndicator);
+    bookIndex = bookIndicator.closest(".book").classList[2].split("_")[1];
+    console.log(bookIndex);
+    if (myLibrary[bookIndex].pagesRead === myLibrary[bookIndex].pages) {
+      console.log(myLibrary[bookIndex].title + " Has been read.");
+      bookIndicator.id = "read";
+    }
+  });
+}
 function saveArrayToLocalStorage(array, key) {
   json = JSON.stringify(array);
   localStorage.setItem(`${key}`, json);
