@@ -269,7 +269,6 @@ function exportBookList(array) {
     });
     csvRows.push(values.join(","));
   }
-
   return csvRows.join("\n").toString();
 }
 function download(data) {
