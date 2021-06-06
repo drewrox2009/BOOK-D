@@ -31,6 +31,7 @@ modalEditSave = document.querySelector(".modal-save-edit");
 modalEditCancel = document.querySelector(".modal-cancel-edit");
 modalEditDelete = document.querySelector(".modal-delete");
 moreModalDelete = document.querySelector("#more-modal-delete");
+moreModalRead = document.querySelector(".more-modal-read");
 menu = document.querySelector("#navbar-menu");
 menu.addEventListener("click", function () {
   if (sortBar.id == "off") {
@@ -43,7 +44,7 @@ menu.addEventListener("click", function () {
   json = JSON.stringify(config);
   localStorage.setItem(configStorage, json);
 });
-searchBar.addEventListener("keyup", (e) => {
+searchBar.addEventListener("keyup", () => {
   const searchString = searchBar.value.toLowerCase();
   const filteredBooks = myLibrary.filter((book) => {
     return (
@@ -56,7 +57,7 @@ searchBar.addEventListener("keyup", (e) => {
 newBookForm = document.querySelector(".new-book-form");
 editBookForm = document.querySelector(".edit-book-form");
 
-addBookTile.addEventListener("click", function (e) {
+addBookTile.addEventListener("click", function () {
   addBookModal.className += " addBookModal-vis ";
 });
 
@@ -64,7 +65,8 @@ window.addEventListener("click", function (e) {
   if (
     e.target.id !== "more" &&
     e.target.id !== "more-modal" &&
-    e.target.id !== "more-modal-delete"
+    e.target.id !== "more-modal-delete" &&
+    e.target.id !== "more-modal-read"
   ) {
     moreModal.className = "more-modal";
   }
@@ -82,7 +84,7 @@ modalCancel.addEventListener("click", function () {
   newBookForm.reset();
 });
 
-modalEditSave.addEventListener("click", function (e) {
+modalEditSave.addEventListener("click", function () {
   index = parseInt(document.querySelector(".edit-book-modal").id);
 
   bookObj = myLibrary[`${index}`];
@@ -110,14 +112,36 @@ modalEditDelete.addEventListener("click", function () {
   editBookForm.reset();
 });
 moreModalDelete.addEventListener("click", function () {
-  index = parseInt(document.querySelector(".edit-book-modal").id);
+  index = parseInt(document.querySelector(".more-modal").id);
+  console.log(index);
   deleteBook(index);
+  editBookModal.className = "edit-book-modal";
+  editBookModal.id = "";
+  moreModal.classList = "more-modal";
+});
+
+let updatePagesRead = function (index, newData) {
+  myLibrary[index].pagesRead = newData;
+  console.log(myLibrary);
+  saveArrayToLocalStorage(myLibrary, localLibraryKey);
+  updateBookList(myLibrary);
+};
+moreModalRead.addEventListener("click", function () {
+  index = parseInt(document.querySelector(".more-modal").id);
+  totalPages = myLibrary[index].pages;
+  updatePagesRead(index, totalPages);
   editBookModal.className = "edit-book-modal";
   editBookModal.id = "";
   editBookForm.reset();
   moreModal.classList = "more-modal";
 });
 
+function UpdatePagesRead(index, newData) {
+  myLibrary[index].pagesRead = newData;
+  console.log(myLibrary);
+  saveArrayToLocalStorage(myLibrary, localLibraryKey);
+  updateBookList(myLibrary);
+}
 function initConfig() {
   config = {
     firstRun: false,
