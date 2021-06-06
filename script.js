@@ -34,11 +34,9 @@ moreModalDelete = document.querySelector("#more-modal-delete");
 menu = document.querySelector("#navbar-menu");
 menu.addEventListener("click", function () {
   if (sortBar.id == "off") {
-    sortBar.style.top = "60px";
-    sortBar.id = "sort-active";
+    sortBar.id = "on";
     config.sortBarConf = "on";
   } else {
-    sortBar.style.top = "0px";
     sortBar.id = "off";
     config.sortBarConf = "off";
   }
